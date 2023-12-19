@@ -1,126 +1,134 @@
-// src/components/TransferForm.js
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Select from 'react-select';
 
 const TransferForm = () => {
-  const [recipient, setRecipient] = useState("");
-  const [amount, setAmount] = useState("");
-  const [fromCurrency, setFromCurrency] = useState("USD");
-  const [toCurrency, setToCurrency] = useState("EUR");
+  const [amount, setAmount] = useState(1);
+  const [baseCurrency, setBaseCurrency] = useState("USD");
+  const [targetCurrency, setTargetCurrency] = useState("KES");
   const [exchangeRate, setExchangeRate] = useState(null);
-  const [convertedAmount, setConvertedAmount] = useState(null);
+  const [countries, setCountries] = useState([]);
+
+  useEffect(() => {
+    // Fetch list of countries when the component mounts
+    const fetchCountries = async () => {
+      try {
+        const response = await axios.get('https://restcountries.com/v3.1/all');
+        const countriesData = response.data.map(country => ({
+          value: country.currencies[0].code,
+          label: country.currencies[0].name,
+        }));
+        setCountries(countriesData);
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+
+    fetchCountries();
+  }, []);
 
   useEffect(() => {
     // Fetch exchange rate when the component mounts or when currencies change
     const fetchExchangeRate = async () => {
       try {
         const response = await axios.get(
-          `https://api.example.com/exchange-rate?from=${fromCurrency}&to=${toCurrency}`
+          `https://api.exchangerate-api.com/v4/latest/${baseCurrency}`
         );
-        setExchangeRate(response.data.rate);
+        setExchangeRate(response.data.rates[targetCurrency]);
       } catch (error) {
         console.error("Error fetching exchange rate:", error);
       }
     };
 
-    fetchExchangeRate();
-  }, [fromCurrency, toCurrency]);
+    if (baseCurrency && targetCurrency) {
+      fetchExchangeRate();
+    }
+  }, [baseCurrency, targetCurrency]);
 
-  const handleTransfer = () => {
-    // Calculate the amount to be received based on the exchange rate
-    const receivedAmount = (parseFloat(amount) * exchangeRate).toFixed(2);
-    setConvertedAmount(receivedAmount);
+  const handleAmountChange = (e) => {
+    setAmount(e.target.value);
+  }
 
-    // Implement logic to send the transfer request to the backend
-    console.log(
-      `Transfer ${amount} ${fromCurrency} to ${recipient}. You will receive ${receivedAmount} ${toCurrency}`
-    );
-  };
+  const handleBaseCurrencyChange = (selectedOption) => {
+    setBaseCurrency(selectedOption.value)
+  }
+
+  const handleTargetCurrencyChange = (selectedOption) => {
+    setTargetCurrency(selectedOption.value)
+  }
 
   return (
-    <div className="max-w-md mx-auto bg-white p-8 mt-10 rounded-md shadow-md">
-      <h2 className="text-2xl font-semibold mb-6">Money Transfer</h2>
+    <div className="max-w-md mx-auto bg-white p-8 mt-10 rounded-md shadow-md text-black">
       <div className="mb-4">
         <label
-          htmlFor="recipient"
-          className="block text-sm font-medium text-gray-600"
+          className="block text-sm font-bold mb-2 text-gray-700"
         >
-          Recipient
+          Amount:
         </label>
         <input
-          type="text"
+          type="number"
           id="recipient"
-          className="mt-1 p-2 w-full border rounded-md"
-          placeholder="Enter recipient's name or account number"
-          value={recipient}
-          onChange={(e) => setRecipient(e.target.value)}
+          className="w-full mt-1 p-2 border rounded border-gray-300"
+          value={amount}
+          onChange={handleAmountChange}
         />
       </div>
+
       <div className="mb-4">
         <label
-          htmlFor="amount"
-          className="block text-sm font-medium text-gray-600"
+          className="block text-sm font-bold  mb-2 text-gray-700"
         >
-          Amount
+          From Currency:
         </label>
-        <input
-          type="text"
-          id="amount"
-          className="mt-1 p-2 w-full border rounded-md"
-          placeholder="Enter amount"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
+        <Select
+          value={{value: baseCurrency, label: baseCurrency}}
+          onChange={handleBaseCurrencyChange}
+          options={[
+            {value: 'USD', label: 'USD'},
+            {value: 'EUR', label: 'EUR'},
+            {value: 'KES', label: 'KES'},
+            {value: 'TZS', label: 'TZS'},
+            {value: 'UGX', label: 'UGX'},
+            {value: 'ZMW', label: 'ZMW'},
+            {value: 'XAF', label: 'XAF'},
+            {value: 'NGN', label: 'NGN'},
+            {value: 'GHS', label: 'GHS'},
+          ]}
         />
       </div>
+
       <div className="mb-4">
         <label
           htmlFor="fromCurrency"
-          className="block text-sm font-medium text-gray-600"
+          className="block text-sm font-bold mb-2 text-gray-700"
         >
-          From Currency
+         To Currency:
         </label>
-        <select
-          id="fromCurrency"
-          className="mt-1 p-2 w-full border rounded-md"
-          value={fromCurrency}
-          onChange={(e) => setFromCurrency(e.target.value)}
-        >
-          {/* Add options for different currencies */}
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          {/* Add more currencies as needed */}
-        </select>
+        <Select
+          value={{value: targetCurrency, label:targetCurrency}}
+          onChange={handleTargetCurrencyChange}
+          options={[
+            {value: 'KES', label: 'KES'},
+            {value: 'TZS', label: 'TZS'},
+            {value: 'UGX', label: 'UGX'},
+            {value: 'ZMW', label: 'ZMW'},
+            {value: 'XAF', label: 'XAF'},
+            {value: 'NGN', label: 'NGN'},
+            {value: 'GHS', label: 'GHS'},
+          ]}
+        />
       </div>
-      <div className="mb-4">
-        <label
-          htmlFor="toCurrency"
-          className="block text-sm font-medium text-gray-600"
-        >
-          To Currency
-        </label>
-        <select
-          id="toCurrency"
-          className="mt-1 p-2 w-full border rounded-md"
-          value={toCurrency}
-          onChange={(e) => setToCurrency(e.target.value)}
-        >
-          {/* Add options for different currencies */}
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          {/* Add more currencies as needed */}
-        </select>
-      </div>
-      <button
-        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-        onClick={handleTransfer}
-      >
-        Transfer Money
-      </button>
-      {convertedAmount && (
-        <p className="mt-4 text-green-600">
-          You will receive approximately {convertedAmount} {toCurrency}.
+
+      <div>
+        <p className="text-gray-700 font-bold">
+          {exchangeRate !== null &&
+            `You send ${amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${baseCurrency} and they will receive ${
+              (amount * exchangeRate).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+            } ${targetCurrency}`
+          }
         </p>
-      )}
+      </div>
+
     </div>
   );
 };

@@ -4,7 +4,7 @@ import TransferForm from "./TransferForm";
 
 const Hero = () => {
   return (
-    <div className="container mt-20 m-auto px-4">
+    <div className="container mt-20 m-auto px-4 w-full lg:w-full">
       {/* Div1 */}
       <div className="flex flex-col lg:flex-row  p-10 w-auto h-full" id="div1">
         {/* Left Div */}
