@@ -1,13 +1,20 @@
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handlePhoneChange = (value) => {
+    setPhoneNumber(value);
+  }
 
   return (
     <div className="container mt-20 px-4">
@@ -31,7 +38,7 @@ const Register = () => {
               style={{
                 borderRadius: "50%",
                 width: "15%",
-                height: "100%", // Adjust the height to be the same as the width for a perfect circle
+                height: "100%", 
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -58,7 +65,7 @@ const Register = () => {
               style={{
                 borderRadius: "50%",
                 width: "15%",
-                height: "100%", // Adjust the height to be the same as the width for a perfect circle
+                height: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -85,7 +92,7 @@ const Register = () => {
               style={{
                 borderRadius: "50%",
                 width: "15%",
-                height: "100%", // Adjust the height to be the same as the width for a perfect circle
+                height: "100%", 
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -106,7 +113,7 @@ const Register = () => {
           <p className="">Privacy Policy</p>
         </div>
         {/* form */}
-        <div className="basis-1/2 p-8 rounded shadow-md w-50 mt-20 mb-5 bg-white text-black max-w-sm">
+        <div className="basis-1/2 p-8 rounded shadow-md w-50 mt-20 mb-5 bg-white text-black max-w-md">
           <h2 className="text-2xl font-bold mb-4">
             Create your BITCOIN account
           </h2>
@@ -152,13 +159,24 @@ const Register = () => {
               >
                 Mobile Number
               </label>
-              <input
+              <PhoneInput
+              inputProps={{
+                id: "phone",
+                name: "phoe",
+                required: true,
+              }}
+              country="ke"
+              value={phoneNumber}
+              onChange={handlePhoneChange}
+              containerClass="mt-1 w-full"
+            />
+              {/* <input
                 type="tel"
                 id="phone"
                 name="phone"
                 className="mt-1 p-2 w-full border rounded-md"
                 placeholder="Enter mobile number"
-              />
+              /> */}
             </div>
 
             <div className="mb-4 relative">

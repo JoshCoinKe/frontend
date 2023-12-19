@@ -1,17 +1,24 @@
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const handlePhoneChange = (value) => {
+    setPhoneNumber(value);
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 text-black">
-      <div className="bg-white p-8 rounded shadow-md w-50 max-w-sm">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-md">
         <h2 className="text-2xl font-bold mb-4">Welcome to BITCOIN</h2>
         <p>
           We make it easy for everyone to send money instantly anywhere,
@@ -19,16 +26,20 @@ const Login = () => {
         </p>
 
         <form className="mt-4">
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label htmlFor="phone" className="block text-sm font-bold ">
               Mobile Number
             </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              className="mt-1 p-2 w-full border rounded-md"
-              placeholder="Enter mobile number"
+            <PhoneInput
+              inputProps={{
+                id: "phone",
+                name: "phoe",
+                required: true,
+              }}
+              country="ke"
+              value={phoneNumber}
+              onChange={handlePhoneChange}
+              containerClass="mt-1 w-full"
             />
           </div>
 
