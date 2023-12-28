@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import logo from "../assets/react.svg";
 const Footer = () => {
   return (
-    <div className="container w-full h-auto">
+    <div className="container w-full h-auto text-white">
       <div className="mx-auto flex flex-col md:flex-row lg:flex-row justify-between items-center p-10">
         {/* Logo on the left */}
         <Link to="/" className="flex items-center text-white">
           <img src={logo} alt="Logo" className="w-10 h-10 mr-2" />
-          <span className="font-bold text-xl">Bitcoin</span>
+          <span className="font-bold text-xl">REMIPAI</span>
         </Link>
         {/* Links on the right */}
         <div className="flex flex-col md:flex-row md:space-x-6 lg:flex-row">

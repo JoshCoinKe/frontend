@@ -6,7 +6,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   return (
-    <div className="bg-gray-800 text-white w-full">
+    <div className="bg-gray-800 w-full">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

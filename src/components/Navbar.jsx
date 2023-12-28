@@ -10,14 +10,14 @@ const Navbar = () => {
   const closeMenu = () => setClick(false);
 
   return (
-    <div className="bg-gray-800 fixed top-0  z-10 w-full">
+    <div className="bg-gray-800 fixed top-0  z-10 w-full text-white">
       <div className="flex items-center justify-between m-auto h-20 p-4 max-w-screen-lg">
         <Link
           to="/"
           className=" hover:border rounded hover:border-yellow-500 hover:bg-black px-4 py-2 flex items-center text-white"
         >
           <img src={logo} alt="Logo" className="w-10 h-10 mr-2" />
-          <span className="font-bold text-xl">Bitcoin</span>
+          <span className="font-bold text-xl">REMIPAI</span>
         </Link>
 
         {/* Mobile Menu Icon */}

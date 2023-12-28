@@ -3,6 +3,8 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -14,14 +16,15 @@ const Register = () => {
 
   const handlePhoneChange = (value) => {
     setPhoneNumber(value);
-  }
+  };
 
   return (
-    <div className="container mt-20 px-4">
-      <div className="flex flex-col lg:flex-row items-center justify-center">
+    <>
+      <Navbar />
+      <div className="flex flex-col lg:flex-row items-center justify-center mt-5">
         {/* text */}
         <div className="w-full h-full basis-1/2 self-center lg:p-10">
-          <div className="p-6">
+          <div className="p-6 text-white">
             <h1>Welcome</h1>
             <p>
               Create your account and send money anytime, anywhere instantly in
@@ -31,14 +34,14 @@ const Register = () => {
 
           <div
             id="div03"
-            className="flex flex-col lg:flex-row mb-5 items-center space-x-4 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg text-black "
+            className="flex flex-col lg:flex-row mb-5 items-center space-x-4 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg "
           >
             <p
               className="bg-green-500"
               style={{
                 borderRadius: "50%",
                 width: "15%",
-                height: "100%", 
+                height: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -58,7 +61,7 @@ const Register = () => {
           </div>
           <div
             id="div03"
-            className="flex flex-col lg:flex-row mb-5 items-center space-x-4 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg text-black "
+            className="flex flex-col lg:flex-row mb-5 items-center space-x-4 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg  "
           >
             <p
               className="bg-green-500"
@@ -85,14 +88,14 @@ const Register = () => {
           </div>
           <div
             id="div03"
-            className="flex flex-col lg:flex-row mb-5 items-center space-x-4 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg text-black "
+            className="flex flex-col lg:flex-row mb-5 items-center space-x-4 p-6 max-w-sm mx-auto bg-white rounded-xl shadow-lg "
           >
             <p
               className="bg-green-500"
               style={{
                 borderRadius: "50%",
                 width: "15%",
-                height: "100%", 
+                height: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -110,12 +113,12 @@ const Register = () => {
               </p>
             </div>
           </div>
-          <p className="">Privacy Policy</p>
+          <p className="text-white">Privacy Policy</p>
         </div>
         {/* form */}
-        <div className="basis-1/2 p-8 rounded shadow-md w-50 mt-20 mb-5 bg-white text-black max-w-md">
+        <div className="basis-1/2 p-8 rounded shadow-md w-50 mt-20 mb-5 bg-white  max-w-md">
           <h2 className="text-2xl font-bold mb-4">
-            Create your BITCOIN account
+            Create your REMIPAI account
           </h2>
           <p>Send money anytime, anywhere instantly</p>
 
@@ -160,23 +163,16 @@ const Register = () => {
                 Mobile Number
               </label>
               <PhoneInput
-              inputProps={{
-                id: "phone",
-                name: "phoe",
-                required: true,
-              }}
-              country="ke"
-              value={phoneNumber}
-              onChange={handlePhoneChange}
-              containerClass="mt-1 w-full"
-            />
-              {/* <input
-                type="tel"
-                id="phone"
-                name="phone"
-                className="mt-1 p-2 w-full border rounded-md"
-                placeholder="Enter mobile number"
-              /> */}
+                inputProps={{
+                  id: "phone",
+                  name: "phone",
+                  required: true,
+                }}
+                country="ke"
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                containerClass="mt-1 w-full"
+              />
             </div>
 
             <div className="mb-4 relative">
@@ -239,7 +235,8 @@ const Register = () => {
           </p>
         </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 };
 
