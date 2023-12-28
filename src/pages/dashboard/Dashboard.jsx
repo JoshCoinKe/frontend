@@ -1,47 +1,43 @@
-import { useState } from "react";
+import { useState, createElement } from "react";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import Transactions from "../../components/Transactions";
+import AllTransactions from "../../components/AllTransactions";
+import Users from "../../components/Users";
+import Profile from "../../components/Profile";
+import Wallet from "../../components/Wallet";
+import Refer from "../../components/Refer";
+import Help from "../../components/Help";
 
-const Transaction = ({ amount, type, date }) => (
-  <div className="flex items-center justify-between border-b py-2">
-    <div className="flex items-center">
-      <span className="mr-2">{type === "deposit" ? "+" : "-"}</span>
-      <span className="font-bold">{amount} coins</span>
-    </div>
-    <div className="text-gray-500">{date}</div>
-  </div>
-);
+const components = {
+  transactions: Transactions,
+  allTransactions: AllTransactions,
+  users: Users,
+  profile: Profile,
+  wallet: Wallet,
+  refer: Refer,
+  help: Help,
+};
 
-const Dashboard = () => {
-  const [transactions, setTransactions] = useState([]);
+const Dashboard = ({ userRole }) => {
+  const [selectedComponent, setSelectedComponent] = useState(
+    components.transactions
+  );
 
-  const sendMoney = (amount) => {
-    // Implement logic to send money (API call, update balance)
-    // Update transactions list after successful send
-    setTransactions([
-      ...transactions,
-      { amount: -amount, type: "withdrawal", date: new Date().toISOString() },
-    ]);
+  const handleSidebarItemClick = (item) => {
+    const component = components[item];
+    setSelectedComponent(component ? createElement(component) : null);
   };
 
   return (
-    <div
-      className="p-4 rounded-lg shadow-md bg-gray-100 text-black
-    "
-    >
-      <div className="text-lg font-bold mb-4">Transactions</div>
-      {transactions.length > 0 ? (
-        transactions.map((transaction) => (
-          <Transaction key={transaction.date} {...transaction} />
-        ))
-      ) : (
-        <p className="">No transactions yet.</p>
-      )}
-      <div className="mt-4 flex justify-end">
-        <button
-          className="px-4 py-2 rounded-lg bg-blue-500 text-white shadow-sm hover:bg-blue-700"
-          onClick={() => sendMoney(10)} // Change amount as needed
-        >
-          Send Money
-        </button>
+    <div className="flex h-screen">
+      <Sidebar
+        userRole={userRole}
+        onSidebarItemClick={handleSidebarItemClick}
+      />
+      <div className="flex flex-col flex-1 overflow-hidden">
+        <Navbar userRole={userRole} />
+        {selectedComponent}
       </div>
     </div>
   );

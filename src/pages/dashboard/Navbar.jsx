@@ -1,88 +1,62 @@
 import { useState } from "react";
 import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  InputBase,
-  Button,
-  Box,
-  Typography,
-  Menu,
-  MenuItem,
-} from "@mui/material";
-import FlexBetween from "../../components/FlexBetween";
-import {
-  ArrowDropDownOutlined,
-  Menu as MenuIcon,
-  Search,
+  AccountBalanceWalletOutlined,
+  LogoutOutlined,
+  OfflineShareOutlined,
+  Person2Outlined,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
-const Navbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const isOpen = Boolean(anchorEl);
-  const handleClick = (event) => setAnchorEl(event.currentTarget);
-  const handleClose = () => setAnchorEl(null);
+const Navbar = () => {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    console.log("Logout clicked");
+  };
+
   return (
-    <AppBar
-      sx={{
-        position: "static",
-        background: "none",
-        boxShadow: "none",
-      }}
-    >
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        {/* Left Side */}
-        <FlexBetween>
-          <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-            <MenuIcon style={{ color: "white" }} />
-          </IconButton>
-          <FlexBetween
-            backgroundColor="grey"
-            borderRadius="9px"
-            gap="3rem"
-            p="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
-        </FlexBetween>
-
-        {/* right side */}
-        <FlexBetween>
-          <Button
-            onClick={handleClick}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              textTransform: "none",
-              gap: "1rem",
-            }}
-          >
-            <Box>
-              <Typography
-                fontWeight="bold"
-                fontSize="0.85rem"
-                sx={{ color: "white" }}
+    <nav className="bg-gray-800 p-4 flex flex-col sm:flex-row justify-between items-center relative">
+      <div className="text-white mb-2 sm:mb-0">
+        <Link to="/dashboard">Logo</Link>
+      </div>
+      <div className="relative">
+        <div
+          className="text-white cursor-pointer mb-2 sm:mb-0"
+          onClick={handleDropdownToggle}
+        >
+          User name
+        </div>
+        {isDropdownOpen && (
+          <div className="mt-2 sm:mt-0 bg-white p-2 rounded shadow-lg absolute right-0 text-black w-40 left-auto">
+            <ul className="">
+              <li className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2">
+                <Person2Outlined />
+                <span>Profile</span>
+              </li>
+              <li className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2">
+                <AccountBalanceWalletOutlined />
+                <span>Wallet</span>
+              </li>
+              <li className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2">
+                <OfflineShareOutlined />
+                <span>Refer and Earn</span>
+              </li>
+              <li
+                className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2"
+                onClick={handleLogout}
               >
-                Georges
-              </Typography>
-            </Box>
-            <ArrowDropDownOutlined sx={{ color: "grey", fontSize: "25px" }} />
-          </Button>
-          <Menu
-            anchorEl={anchorEl}
-            open={isOpen}
-            onClose={handleClose}
-            anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
-          >
-            <MenuItem onClick={handleClose}>Log Out</MenuItem>
-          </Menu>
-        </FlexBetween>
-      </Toolbar>
-    </AppBar>
+                <LogoutOutlined />
+                <span>Log Out</span>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 };
 
