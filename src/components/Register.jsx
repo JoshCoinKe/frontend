@@ -1,22 +1,62 @@
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import { Base_Url } from "../constants/network";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import axios from "axios";
+
+const validationSchema = Yup.object({
+  name: Yup.string().required("Full name is required"),
+  email: Yup.string()
+    .email("Please enter a valid email address")
+    .required("Email is required"),
+  phone: Yup.string().required("Please enter a valid phone number"),
+  password: Yup.string().required("Password is required"),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Please confirm your password"),
+});
 
 const Register = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handlePhoneChange = (value) => {
-    setPhoneNumber(value);
+  const onSubmit = async (values) => {
+    try {
+      const response = await axios.post(`${Base_Url}/register`, values);
+
+      if (response && response.data) {
+        formik.resetForm();
+        navigate("/login");
+      } else {
+        console.log("Registration failed");
+      }
+    } catch (err) {
+      if (err && err.response) formik.setFieldError(err.response.data.message);
+    }
   };
+
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validateOnBlur: true,
+    onSubmit,
+    validationSchema: validationSchema,
+  });
 
   return (
     <>
@@ -122,7 +162,7 @@ const Register = () => {
           </h2>
           <p>Send money anytime, anywhere instantly</p>
 
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <div className="mb-4">
               <label
                 htmlFor="name"
@@ -136,7 +176,13 @@ const Register = () => {
                 name="name"
                 className="mt-1 p-2 w-full border rounded-md"
                 placeholder="e.g John Doe"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.name}
               />
+              {formik.touched.name && formik.errors.name ? (
+                <div className="text-red-500">{formik.errors.name}</div>
+              ) : null}
             </div>
 
             <div className="mb-4">
@@ -152,7 +198,13 @@ const Register = () => {
                 name="email"
                 className="mt-1 p-2 w-full border rounded-md"
                 placeholder="e.g johndoe@example.com"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
               />
+              {formik.touched.email && formik.errors.email ? (
+                <div className="text-red-500">{formik.errors.email}</div>
+              ) : null}
             </div>
 
             <div className="mb-4">
@@ -169,10 +221,14 @@ const Register = () => {
                   required: true,
                 }}
                 country="ke"
-                value={phoneNumber}
-                onChange={handlePhoneChange}
                 containerClass="mt-1 w-full"
+                onChange={(value) => formik.setFieldValue("phone", value)}
+                onBlur={formik.handleBlur}
+                value={formik.values.phone}
               />
+              {formik.touched.phone && formik.errors.phone ? (
+                <div className="text-red-500">{formik.errors.phone}</div>
+              ) : null}
             </div>
 
             <div className="mb-4 relative">
@@ -188,6 +244,9 @@ const Register = () => {
                 name="password"
                 className="mt-1 p-2 w-full border rounded-md pr-10"
                 placeholder="Enter your password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
               />
               <span
                 className="absolute inset-y-0 right-0 flex items-center pr-2 cursor-pointer mt-5"
@@ -195,6 +254,9 @@ const Register = () => {
               >
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </span>
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-red-500">{formik.errors.password}</div>
+              ) : null}
             </div>
 
             <div className="mb-4 relative">
@@ -206,10 +268,13 @@ const Register = () => {
               </label>
               <input
                 type={showPassword ? "text" : "password"}
-                id="password"
-                name="password"
+                id="confirmPassword"
+                name="confirmPassword"
                 className="mt-1 p-2 w-full border rounded-md pr-10"
-                placeholder="Enter your password"
+                placeholder="confirm your password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.confirmPassword}
               />
               <span
                 className="absolute inset-y-0 right-0 flex items-center pr-2 cursor-pointer mt-5"
@@ -217,11 +282,18 @@ const Register = () => {
               >
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </span>
+              {formik.touched.confirmPassword &&
+              formik.errors.confirmPassword ? (
+                <div className="text-red-500">
+                  {formik.errors.confirmPassword}
+                </div>
+              ) : null}
             </div>
 
             <button
               type="submit"
               className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 focus:outline-none focus:shadow-outline-blue active:bg-green-800 w-full"
+              disabled={!formik.isValid}
             >
               Create account
             </button>

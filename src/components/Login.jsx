@@ -1,22 +1,56 @@
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import PhoneInput from "react-phone-input-2";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+//import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import axios from "axios";
+//import { useUser } from "../state/UserContext";
+import { Base_Url } from "../constants/network";
+
+const validationSchema = Yup.object({
+  email: Yup.string().email("Invalid email address").required("Required"),
+  password: Yup.string().required("Required"),
+});
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
+  //const [phoneNumber, setPhoneNumber] = useState("");
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (values) => {
+    try {
+      const response = await axios.post(`${Base_Url}/login`, values);
+      if (response) {
+        alert("Welcome back. Authenticating...");
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      if (err && err.response) formik.setFieldError(err.response.data.message);
+    }
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validateOnBlur: true,
+    onSubmit,
+    validationSchema: validationSchema,
+  });
 
   const handlePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  const handlePhoneChange = (value) => {
-    setPhoneNumber(value);
-  };
+  // const handlePhoneChange = (value) => {
+  //   setPhoneNumber(value);
+  // };
 
   return (
     <>
@@ -29,8 +63,26 @@ const Login = () => {
             anytime.
           </p>
 
-          <form className="mt-4">
+          <form className="mt-4" onSubmit={formik.handleSubmit}>
             <div className="mb-4 relative">
+              <label htmlFor="email" className="block text-sm font-bold ">
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                className="mt-1 p-2 w-full border rounded-md"
+                placeholder="e.g johndoe@example.com"
+              />
+              {formik.touched.email && formik.errors.email ? (
+                <div className="text-red-500">{formik.errors.email}</div>
+              ) : null}
+            </div>
+            {/* <div className="mb-4 relative">
               <label htmlFor="phone" className="block text-sm font-bold ">
                 Mobile Number
               </label>
@@ -45,7 +97,7 @@ const Login = () => {
                 onChange={handlePhoneChange}
                 containerClass="mt-1 w-full"
               />
-            </div>
+            </div> */}
 
             <div className="mb-4 relative">
               <label htmlFor="password" className="block text-sm font-bold">
@@ -56,7 +108,10 @@ const Login = () => {
                 id="password"
                 name="password"
                 className="mt-1 p-2 w-full border rounded-md pr-10"
-                placeholder="Enter your password"
+                placeholder="********"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
               />
               <span
                 className="absolute inset-y-0 right-0 flex items-center pr-2 cursor-pointer mt-5"
@@ -64,6 +119,9 @@ const Login = () => {
               >
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </span>
+              {formik.touched.password && formik.errors.password ? (
+                <div className="text-red-500">{formik.errors.password}</div>
+              ) : null}
             </div>
 
             <div className="mb-4 text-right">
