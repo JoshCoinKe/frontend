@@ -1,11 +1,6 @@
 import { useState } from "react";
-import {
-  AccountBalanceWalletOutlined,
-  LogoutOutlined,
-  OfflineShareOutlined,
-  Person2Outlined,
-} from "@mui/icons-material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { LogoutOutlined } from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Base_Url } from "../../constants/network";
 import axios from "axios";
 
@@ -40,9 +35,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-gray-800 p-4 flex flex-col sm:flex-row justify-between items-center relative">
-      <div className="text-white mb-2 sm:mb-0">
-        <Link to="/dashboard">Logo</Link>
-      </div>
+      <div className="text-white mb-2 sm:mb-0">Remipai</div>
       <div className="relative">
         <div
           className="text-white cursor-pointer mb-2 sm:mb-0"
@@ -53,18 +46,6 @@ const Navbar = () => {
         {isDropdownOpen && (
           <div className="mt-2 sm:mt-0 bg-white p-2 rounded shadow-lg absolute right-0 text-black w-40 left-auto">
             <ul className="">
-              <li className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2">
-                <Person2Outlined />
-                <span>Profile</span>
-              </li>
-              <li className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2">
-                <AccountBalanceWalletOutlined />
-                <span>Wallet</span>
-              </li>
-              <li className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2">
-                <OfflineShareOutlined />
-                <span>Refer and Earn</span>
-              </li>
               <li
                 className="flex items-center space-x-2 cursor-pointer whitespace-nowrap pb-2"
                 onClick={handleLogout}
