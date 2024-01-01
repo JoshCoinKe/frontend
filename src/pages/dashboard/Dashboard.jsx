@@ -24,9 +24,12 @@ const Dashboard = ({ userRole }) => {
     components.transactions
   );
 
+  // In Dashboard component
   const handleSidebarItemClick = (item) => {
+    console.log("Clicked item key:", item);
     const component = components[item];
-    setSelectedComponent(component ? createElement(component) : null);
+    console.log("Selected component:", component);
+    setSelectedComponent(createElement(component));
   };
 
   return (
@@ -35,7 +38,7 @@ const Dashboard = ({ userRole }) => {
         userRole={userRole}
         onSidebarItemClick={handleSidebarItemClick}
       />
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden bg-white m-5">
         <Navbar userRole={userRole} />
         {selectedComponent}
       </div>

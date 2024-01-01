@@ -29,7 +29,9 @@ const Sidebar = ({ userRole, onSidebarItemClick }) => {
     { icon: <ContactSupportOutlined />, text: "Help", key: "help" },
   ];
 
+  // In Sidebar component
   const handleItemClick = (item) => {
+    console.log("Clicked sidebar item key:", item.key);
     setActiveItem(item.key);
     onSidebarItemClick(item.key);
   };
