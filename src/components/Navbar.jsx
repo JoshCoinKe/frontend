@@ -1,5 +1,5 @@
 import { useState } from "react";
-import logo from "../assets/react.svg";
+import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 
@@ -16,7 +16,12 @@ const Navbar = () => {
           to="/"
           className=" hover:border rounded hover:border-yellow-500 hover:bg-black px-4 py-2 flex items-center text-white"
         >
-          <img src={logo} alt="Logo" className="w-10 h-10 mr-2" />
+          <img
+            src={logo}
+            alt="Logo"
+            className=" mr-2"
+            style={{ width: "50px", height: "50px" }}
+          />
           <span className="font-bold text-xl">REMIPAI</span>
         </Link>
 

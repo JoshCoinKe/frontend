@@ -1,6 +1,6 @@
 // Footer.js
 import { Link } from "react-router-dom";
-import logo from "../assets/react.svg";
+import logo from "../assets/logo.png";
 const Footer = () => {
   return (
     <div className="container w-full h-auto text-white">

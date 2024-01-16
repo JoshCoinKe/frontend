@@ -21,7 +21,7 @@ const components = {
 
 const Dashboard = ({ userRole }) => {
   const [selectedComponent, setSelectedComponent] = useState(
-    components.transactions
+    components.profile
   );
 
   // In Dashboard component

@@ -2,7 +2,7 @@ import { EditOutlined } from "@mui/icons-material";
 
 const Profile = () => {
   return (
-    <div className="ml-10 mt-10 max-w-md p-4 bg-white rounded shadow-lg text-black">
+    <div className="ml-10 mt-10 max-w-md p-4  rounded shadow-lg text-black">
       <h2 className="text-2xl font-bold mb-4">My Profile</h2>
       <p className="text-sm">
         You have full control to manage your own account settings.
