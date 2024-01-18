@@ -26,7 +26,6 @@ const Dashboard = ({ userRole }) => {
 
   // In Dashboard component
   const handleSidebarItemClick = (item) => {
-    console.log("Clicked item key:", item);
     const component = components[item];
     console.log("Selected component:", component);
     setSelectedComponent(createElement(component));

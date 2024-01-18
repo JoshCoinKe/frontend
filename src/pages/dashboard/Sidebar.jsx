@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const Sidebar = ({ userRole, onSidebarItemClick }) => {
   const [activeItem, setActiveItem] = useState("transactions");
+
   const sidebarItems = [
     { icon: <PaidOutlined />, text: "Transactions", key: "transactions" },
     {
@@ -31,14 +32,15 @@ const Sidebar = ({ userRole, onSidebarItemClick }) => {
 
   // In Sidebar component
   const handleItemClick = (item) => {
-    console.log("Clicked sidebar item key:", item.key);
     setActiveItem(item.key);
     onSidebarItemClick(item.key);
   };
 
   return (
     <div className="text-black bg-gray-900 h-full w-40 flex flex-col">
-      {sidebarItems.map((item) => (
+      {sidebarItems
+      .filter((item) => item.visible !== false)
+      .map((item) => (
         <div
           key={item.key}
           className={`flex text-white p-4 hover:bg-gray-700 transition duration-300 cursor-pointer ${

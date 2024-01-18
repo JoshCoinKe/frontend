@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Base_Url } from "../../constants/network";
 import axios from "axios";
 
-const Navbar = () => {
+const Navbar = ({userRole}) => {
   const location = useLocation();
   const navigate = useNavigate();
   const user = location.state && location.state.user;
@@ -41,7 +41,7 @@ const Navbar = () => {
           className="text-white cursor-pointer mb-2 sm:mb-0"
           onClick={handleDropdownToggle}
         >
-          {user.name}
+          {user.name} ({userRole})
         </div>
         {isDropdownOpen && (
           <div className="mt-2 sm:mt-0 bg-white p-2 rounded shadow-lg absolute right-0 text-black w-40 left-auto">
