@@ -1,6 +1,9 @@
 import { EditOutlined } from "@mui/icons-material";
+import { useLocation } from "react-router-dom";
 
 const Profile = () => {
+  const location = useLocation();
+  const {user} = location.state || {};
   return (
     <div className="ml-10 mt-10 max-w-md p-4  rounded shadow-lg text-black">
       <h2 className="text-2xl font-bold mb-4">My Profile</h2>
@@ -14,7 +17,7 @@ const Profile = () => {
           Full Name:
         </label>
         <p id="fullName" className="flex-grow">
-          John Doe <EditOutlined className="cursor-pointer ml-auto" />
+          {user ? user.name : 'N/A'} <EditOutlined className="cursor-pointer ml-auto" />
         </p>
       </div>
 
@@ -23,7 +26,7 @@ const Profile = () => {
           Mobile Number:
         </label>
         <p id="mobileNumber" className="flex-grow">
-          +254 741000000 <EditOutlined className="cursor-pointer ml-auto" />
+        {user ? user.phone : 'N/A'} <EditOutlined className="cursor-pointer ml-auto" />
         </p>
       </div>
 
@@ -32,7 +35,7 @@ const Profile = () => {
           Email address:
         </label>
         <p id="email" className="flex-grow">
-          johndoe@example.com{" "}
+        {user ? user.email : 'N/A'}
           <EditOutlined className="cursor-pointer ml-auto" />
         </p>
       </div>
