@@ -29,7 +29,7 @@ const Login = () => {
         alert("Welcome back. Authenticating...");
         const user = response.data.user;
         const token = response.data.authorization;
-        navigate("/dashboard", { state: { user, token } });
+        navigate("/dashboard", { state: { user, token, userRole: user.role } });
       }
     } catch (err) {
       if (err && err.response) formik.setFieldError(err.response.data.message);
